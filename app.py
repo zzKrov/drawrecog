@@ -8,269 +8,251 @@ import streamlit as st
 from streamlit_drawable_canvas import st_canvas
 
 # ---------------------------------------------------------
-# CONFIGURACIÓN DE PÁGINA (Layout Wide)
+# CONFIGURACIÓN GENERAL (LAYOUT WIDE)
 # ---------------------------------------------------------
 st.set_page_config(
-    page_title="Tablero Inteligente Neon-AI",
+    page_title="Tablero Creativo de Bocetos // Krov Industries",
     page_icon="⚡",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
 # ---------------------------------------------------------
-# ESTILOS CSS HÍPER-SATURADOS, EFECTOS HOVER Y RESPONSIVIDAD
+# LÍNEA BASE VISUAL: GRADIENTES CIBER-NEÓN Y FLUIDOS
 # ---------------------------------------------------------
-st.markdown(
-    """
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;900&family=Rajdhani:wght@500;700&display=swap');
+st.markdown("""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
-    /* Fondo principal y tipografía */
-    .stApp {
-        background: radial-gradient(circle at 50% 10%, #1a0826 0%, #080312 60%, #020108 100%);
-        color: #ffffff;
-        font-family: 'Rajdhani', sans-serif;
-    }
+html, body, [data-testid="stAppViewContainer"], .stApp {
+    background-color: #05020c !important;
+    color: #ffffff !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    overflow-x: hidden;
+}
 
-    /* Título con gradiente híper-saturado y brillo de neón */
-    .neon-title {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 3rem;
-        font-weight: 900;
-        text-align: center;
-        background: linear-gradient(90deg, #ff007f, #00f3ff, #ffe600, #ff007f);
-        background-size: 300% 300%;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: gradientShift 6s ease infinite, glow 2s ease-in-out infinite alternate;
-        margin-bottom: 0.2rem;
-    }
+[data-testid="stHeader"] { background: transparent !important; }
 
-    @keyframes gradientShift {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
+/* 1. Malla continua de gradientes vivos */
+.stApp {
+    background: linear-gradient(135deg, #05020c 0%, #170428 30%, #290520 60%, #060210 100%) !important;
+    background-size: 300% 300% !important;
+    animation: neonShift 18s ease infinite alternate !important;
+}
 
-    @keyframes glow {
-        from { filter: drop-shadow(0 0 10px rgba(255, 0, 127, 0.7)); }
-        to { filter: drop-shadow(0 0 25px rgba(0, 243, 255, 0.9)); }
-    }
+@keyframes neonShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
 
-    .neon-subtitle {
-        text-align: center;
-        color: #00f3ff;
-        font-size: 1.25rem;
-        letter-spacing: 2px;
-        margin-bottom: 1.8rem;
-        text-shadow: 0 0 8px rgba(0, 243, 255, 0.8);
-    }
+/* 2. Fluidos orgánicos de neón */
+.fluid-neon-1 {
+    position: fixed;
+    top: 15%;
+    left: -120px;
+    width: 520px;
+    height: 520px;
+    background: radial-gradient(circle, rgba(255, 0, 127, 0.16) 0%, rgba(0, 243, 255, 0.04) 55%, transparent 75%);
+    border-radius: 40% 60% 70% 30% / 50% 60% 40% 50%;
+    filter: blur(85px);
+    animation: neonDrift1 20s infinite alternate ease-in-out;
+    pointer-events: none;
+    z-index: 0;
+}
 
-    /* Contenedor del lienzo centrado y ocupando ~80% */
-    .canvas-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 0 auto;
-        padding: 12px;
-        background: rgba(15, 5, 29, 0.7);
-        border: 2px solid #ff007f;
-        border-radius: 24px;
-        box-shadow: 0 0 20px rgba(255, 0, 127, 0.6), inset 0 0 15px rgba(0, 243, 255, 0.3);
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
+.fluid-neon-2 {
+    position: fixed;
+    bottom: 5%;
+    right: -100px;
+    width: 560px;
+    height: 560px;
+    background: radial-gradient(circle, rgba(0, 243, 255, 0.14) 0%, rgba(255, 0, 127, 0.03) 55%, transparent 75%);
+    border-radius: 60% 40% 50% 50% / 40% 50% 60% 50%;
+    filter: blur(90px);
+    animation: neonDrift2 24s infinite alternate ease-in-out;
+    pointer-events: none;
+    z-index: 0;
+}
 
-    .canvas-container:hover {
-        transform: translateY(-4px) scale(1.008);
-        border-color: #00f3ff;
-        box-shadow: 0 0 35px rgba(0, 243, 255, 0.9), inset 0 0 25px rgba(255, 0, 127, 0.5);
-    }
+@keyframes neonDrift1 {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(120px, 70px) scale(1.15); }
+    100% { transform: translate(40px, 140px) scale(0.95); }
+}
 
-    /* Adaptabilidad del canvas en pantallas pequeñas */
-    div[data-testid="stCanvas"] > canvas {
-        border-radius: 18px !important;
-        max-width: 100% !important;
-        height: auto !important;
-    }
+@keyframes neonDrift2 {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-110px, -80px) scale(1.2); }
+    100% { transform: translate(-30px, -120px) scale(0.9); }
+}
 
-    /* Botón de análisis con efecto visual ultra-saturado */
-    div.stButton > button {
-        width: 100%;
-        background: linear-gradient(135deg, #ff007f 0%, #7928ca 50%, #00f3ff 100%);
-        color: #ffffff;
-        font-family: 'Orbitron', sans-serif;
-        font-size: 1.2rem;
-        font-weight: 700;
-        padding: 0.8rem 2rem;
-        border: none;
-        border-radius: 14px;
-        letter-spacing: 2px;
-        cursor: pointer;
-        box-shadow: 0 0 18px rgba(255, 0, 127, 0.75);
-        transition: all 0.3s ease;
-    }
+.brand-signature {
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    color: #00f3ff;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
 
-    div.stButton > button:hover {
-        transform: scale(1.03) translateY(-2px);
-        box-shadow: 0 0 30px rgba(0, 243, 255, 1), 0 0 45px rgba(255, 0, 127, 0.9);
-        color: #ffff00;
-    }
+.main-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 0.2rem;
+    text-shadow: 0 0 30px rgba(0, 243, 255, 0.45);
+}
 
-    /* Tarjeta de Respuesta */
-    .response-box {
-        background: rgba(18, 9, 36, 0.85);
-        border-left: 5px solid #00f3ff;
-        border-right: 5px solid #ff007f;
-        padding: 22px;
-        border-radius: 16px;
-        margin-top: 25px;
-        box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
-        font-size: 1.15rem;
-        line-height: 1.6;
-        animation: fadeIn 0.5s ease;
-    }
+.sub-lead {
+    text-align: center;
+    color: #00f3ff;
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+}
 
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
+/* Centrado simétrico del lienzo */
+div[data-testid="stCustomComponentV1"] {
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+}
 
-    /* Sidebar Personalizada */
-    section[data-testid="stSidebar"] {
-        background: #0a0414;
-        border-right: 1px solid rgba(255, 0, 127, 0.3);
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+iframe[title*="canvas"] {
+    width: 680px !important;
+    height: 380px !important;
+    margin: 0 auto !important;
+    display: block !important;
+    border: 2px solid rgba(255, 0, 127, 0.45) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 0, 127, 0.25) !important;
+    transition: all 0.3s ease !important;
+}
+
+iframe[title*="canvas"]:hover {
+    border-color: #00f3ff !important;
+    box-shadow: 0 18px 55px rgba(0, 0, 0, 0.9), 0 0 35px rgba(0, 243, 255, 0.45) !important;
+}
+
+div.stButton > button {
+    background: linear-gradient(135deg, #ff007f 0%, #7928ca 50%, #00f3ff 100%) !important;
+    color: #ffffff !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.9rem !important;
+    font-weight: 700 !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 0.8rem 1.6rem !important;
+    box-shadow: 0 0 25px rgba(255, 0, 127, 0.4) !important;
+    transition: all 0.25s ease !important;
+}
+
+div.stButton > button:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 0 40px rgba(0, 243, 255, 0.8) !important;
+}
+
+.response-box {
+    background: rgba(18, 9, 36, 0.85);
+    border-left: 4px solid #00f3ff;
+    padding: 22px;
+    border-radius: 10px;
+    margin-top: 20px;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6);
+}
+</style>
+
+<div class="fluid-neon-1"></div>
+<div class="fluid-neon-2"></div>
+""", unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# CABECERA VISUAL
-# ---------------------------------------------------------
-st.markdown('<h1 class="neon-title">⚡ TABLERO INTELIGENTE ⚡</h1>', unsafe_allow_html=True)
-st.markdown(
-    '<p class="neon-subtitle">DIBUJA TU BOCETO • LA IA RECONOCERÁ TU CREACIÓN EN TIEMPO REAL</p>',
-    unsafe_allow_html=True,
-)
-
-# ---------------------------------------------------------
-# BARRA LATERAL (CONTROLES Y CONFIGURACIÓN)
+# BARRA LATERAL (HERRAMIENTAS DE TRAZO)
 # ---------------------------------------------------------
 with st.sidebar:
-    st.markdown("### 🎛️ Centro de Control")
+    st.markdown("### Configuración de Trazo")
     api_key_input = st.text_input(
         "Clave de API de OpenAI",
         type="password",
-        placeholder="sk-proj-...",
-        help="Introduce tu API key para habilitar la visión por IA.",
+        value=os.environ.get("OPENAI_API_KEY", "")
     )
-    
-    st.markdown("---")
-    st.markdown("### 🖌️ Parámetros del Trazo")
-    stroke_width = st.slider("Grosor del lápiz", min_value=2, max_value=35, value=7)
-    stroke_color = st.color_picker("Color de trazo", "#000000")
-    bg_color = st.color_picker("Color del lienzo", "#FFFFFF")
-    
-    st.markdown("---")
-    st.info("💡 **Tip:** Traza formas simples o complejas y deja que GPT-4o-mini interprete cada detalle.")
+    if api_key_input:
+        os.environ["OPENAI_API_KEY"] = api_key_input
 
-# ---------------------------------------------------------
-# ÁREA PRINCIPAL: LIENZO CENTRADO AL ~80%
-# ---------------------------------------------------------
-# 10% margen izq | 80% centro | 10% margen der
-col_left, col_canvas, col_right = st.columns([1, 8, 1])
+    st.markdown("---")
+    stroke_width = st.slider("Calibre del lápiz", min_value=2, max_value=30, value=7)
+    stroke_color = st.color_picker("Tinta de trazo", "#000000")
+    bg_color = st.color_picker("Color del plano", "#ffffff")
 
-with col_canvas:
-    st.markdown('<div class="canvas-container">', unsafe_allow_html=True)
-    
+st.markdown('<div class="brand-signature">Krov Industries · Visión Creativa</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-title">Tablero Creativo de Bocetos</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub-lead">Dibuja una figura o concepto y la IA deducirá el significado en tiempo real</div>', unsafe_allow_html=True)
+
+_, col_c, _ = st.columns([1, 4.5, 1])
+
+with col_c:
     canvas_result = st_canvas(
         fill_color="rgba(255, 0, 127, 0.2)",
         stroke_width=stroke_width,
         stroke_color=stroke_color,
         background_color=bg_color,
-        height=480,
-        width=920,
+        height=380,
+        width=680,
         drawing_mode="freedraw",
-        key="super_canvas",
+        key="creative_sketch_canvas",
     )
-    st.markdown('</div>', unsafe_allow_html=True)
     
     st.write("")
-    analyze_button = st.button("🚀 IDENTIFICAR BOCETO", use_container_width=True)
+    analyze_button = st.button("Identificar boceto con IA", use_container_width=True)
 
-# ---------------------------------------------------------
-# PROCESAMIENTO Y RECONOCIMIENTO CON OPENAI
-# ---------------------------------------------------------
 def process_and_encode_canvas(image_data: np.ndarray) -> str:
-    """Convierte la matriz de píxeles del canvas a Base64 en memoria."""
     img = Image.fromarray(image_data.astype("uint8"), "RGBA")
     buffered = io.BytesIO()
-    # Convertir a RGB (fondo blanco para compatibilidad si hay transparencias)
     rgb_img = Image.new("RGB", img.size, (255, 255, 255))
     rgb_img.paste(img, mask=img.split()[3])
     rgb_img.save(buffered, format="JPEG", quality=95)
     return base64.b64encode(buffered.getvalue()).decode("utf-8")
 
-
 if analyze_button:
-    api_key = api_key_input or os.environ.get("OPENAI_API_KEY", "")
-
+    api_key = os.environ.get("OPENAI_API_KEY", "")
     if not api_key:
-        st.warning("⚠️ Debes proporcionar una API Key de OpenAI en la barra lateral para continuar.")
-    elif canvas_result.image_data is None:
-        st.warning("⚠️ Dibuja algo en el lienzo antes de solicitar el análisis.")
+        st.warning("Introduce una clave de API de OpenAI en la barra lateral para continuar.")
+    elif canvas_result.image_data is None or not np.any(canvas_result.image_data[:, :, 3] > 0):
+        st.warning("El lienzo parece estar vacío. Realiza un trazo antes de solicitar el análisis.")
     else:
-        # Validar si el usuario dibujó algo (comprobar si hay trazos alfa > 0)
-        has_drawing = np.any(canvas_result.image_data[:, :, 3] > 0)
-        
-        if not has_drawing:
-            st.warning("⚠️ El lienzo parece estar vacío. ¡Haz un trazo primero!")
-        else:
-            with col_canvas:
-                with st.spinner("🔮 Decodificando trazos con GPT-4o-mini..."):
-                    try:
-                        base64_image = process_and_encode_canvas(canvas_result.image_data)
-                        client = OpenAI(api_key=api_key)
-
-                        prompt_text = (
-                            "Eres un experto crítico e intérprete de bocetos rápidos. "
-                            "Analiza la siguiente imagen dibujada por el usuario. "
-                            "Identifica con precisión qué representa el boceto, sus detalles clave, "
-                            "y explica tu deducción de forma creativa, clara y en español."
-                        )
-
-                        response = client.chat.completions.create(
-                            model="gpt-4o-mini",
-                            messages=[
-                                {
-                                    "role": "user",
-                                    "content": [
-                                        {"type": "text", "text": prompt_text},
-                                        {
-                                            "type": "image_url",
-                                            "image_url": {
-                                                "url": f"data:image/jpeg;base64,{base64_image}",
-                                                "detail": "high"
-                                            },
-                                        },
-                                    ],
-                                }
-                            ],
-                            max_tokens=600,
-                            temperature=0.4,
-                        )
-
-                        result_content = response.choices[0].message.content
-
-                        st.markdown(
-                            f"""
-                            <div class="response-box">
-                                <h3 style="color: #00f3ff; margin-top:0;">🤖 Interpretación del Boceto:</h3>
-                                {result_content}
-                            </div>
-                            """,
-                            unsafe_allow_html=True,
-                        )
-                    except Exception as e:
-                        st.error(f"❌ Error al conectar con OpenAI: {str(e)}")
+        with col_c:
+            with st.spinner("Interpretando trazos con GPT-4o-mini..."):
+                try:
+                    b64_img = process_and_encode_canvas(canvas_result.image_data)
+                    client = OpenAI(api_key=api_key)
+                    prompt_text = (
+                        "Interpreta de forma creativa, estructurada y en español qué representa este dibujo. "
+                        "Describe los detalles identificados y explica tu deducción con claridad."
+                    )
+                    resp = client.chat.completions.create(
+                        model="gpt-4o-mini",
+                        messages=[
+                            {
+                                "role": "user",
+                                "content": [
+                                    {"type": "text", "text": prompt_text},
+                                    {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{b64_img}"}}
+                                ]
+                            }
+                        ],
+                        max_tokens=500
+                    )
+                    st.markdown(
+                        f"""
+                        <div class="response-box">
+                            <h4 style="color:#00f3ff; margin-top:0;">Interpretación del Boceto:</h4>
+                            <div style="font-size:1.02rem; line-height:1.6;">{resp.choices[0].message.content}</div>
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
+                except Exception as e:
+                    st.error(f"Error al conectar con la API de OpenAI: {e}")
