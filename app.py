@@ -266,6 +266,7 @@ canvas_data = st_canvas(
     background_color="#ffffff",
     height=380,
     width=720,
+    return_image_data=True,
     drawing_mode=modo,
     key=f"boceto_art_v{st.session_state.ver_boceto}",
 )
@@ -295,7 +296,7 @@ if btn_analizar:
     key_val = os.environ.get("OPENAI_API_KEY", "").strip()
     if not key_val:
         st.warning("Introduce tu clave de API de OpenAI en el campo superior.")
-    elif canvas_data.image_data is None or not np.any(canvas_data.image_data[:, :, 3] > 0):
+    elif canvas_data is None or canvas_data.image_data is None or not np.any(canvas_data.image_data[:, :, :3] < 250):
         st.warning("El lienzo está en blanco. Traza un dibujo antes de solicitar el análisis.")
     else:
         prog = st.progress(0, text="Codificando matriz visual...")
